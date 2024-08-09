@@ -1,0 +1,33 @@
+.main-div{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.img-div{
+    
+    padding-left: 10%;
+    padding-right: 5%;
+}
+
+.title-image{
+    height: 300px;
+    object-fit: contain;
+    width: 50vw;
+}
+
+.comments{
+    border: 1px solid grey;
+    padding: 5px; 
+    border-radius: 5px;
+}
+
+#user{
+    padding-left: 5px; 
+    margin: 0;
+}
+
+#comment-content{
+    padding-left: 20px; 
+    margin: 0;
+}

@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>WatchList</h2>
+    <!-- Title, description, price, photo if exists -->
+     {% for listing in listings %}
+        <div class="container-div">
+            <div class="image-div">
+                <img class="title-img"
+                src="{{listing.url}}"
+                alt="{{listing.title}}"
+                width="200px" height="300px">
+            </div>
+            <div class="info-div">
+                <big><b>{{listing.title}}</b></big>
+                <p><b>Intial Bid:</b> ${{listing.starting_bid}}</p>
+                <p>{{ listing.description }}</p>
+                <a href="{% url 'listing' listing.id %}"><button type="button" class="btn btn-primary">Visit Listing</button></a>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+    
+{% endblock %}

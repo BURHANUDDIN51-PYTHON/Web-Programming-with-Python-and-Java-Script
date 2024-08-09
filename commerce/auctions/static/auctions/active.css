@@ -1,0 +1,17 @@
+.container-div{
+    display: flex;
+    align-items: center;
+    gap: 10vw;
+    position: relative;
+    border: 1px solid #c8cfca
+}
+
+.image-div{
+    height: 300px;
+    width: 200px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+
+

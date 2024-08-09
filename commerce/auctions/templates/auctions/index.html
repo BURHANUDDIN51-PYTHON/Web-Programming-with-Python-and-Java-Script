@@ -1,0 +1,40 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+        <label>Choose a Category:</label>
+        <select name="category">
+                <option selected disabled>Select a Category</option>
+            {% for cat in category %}
+                <option value="{{cat.id}}">{{cat}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-warning btn-sm">Choose</button>
+    </form>
+    <br>
+
+
+    <!-- Title, description, price, photo if exists -->
+     {% for listing in listings %}
+        {% if listing.is_active %}
+            <div class="container-div">
+                <div class="image-div">
+                    <img class="title-img"
+                    src="{{listing.url}}"
+                    alt="{{listing.title}}"
+                    width="200px" height="300px">
+                </div>
+                <div class="info-div">
+                    <big><b>{{listing.title}}</b></big>
+                    <p><b>Intial Bid:</b> ${{listing.starting_bid}}</p>
+                    <p>{{ listing.description }}</p>
+                    <a href="{% url 'listing' listing.id %}"><button type="button" class="btn btn-primary">Visit Listing</button></a>
+                </div>
+            </div>
+            <br>
+        {% endif %}
+    {% endfor %}
+    
+{% endblock %}

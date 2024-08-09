@@ -1,0 +1,117 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    <div class="main-div">
+        <h1>Listing: {{ list.title }}</h1>
+
+            {% if list.is_active %}
+               
+            {% else %}
+                <div>
+                    {{ bidder }}
+                </div>
+            {% endif %}
+
+
+            {% if user.is_authenticated %}
+            <form action="{% url 'watchlist' list.id  is_watchlist %}" method="post">
+                {% csrf_token %}
+                {% if is_watchlist %}
+                    <input type="submit" class="btn btn-secondary" value="Remove From watchlist">
+                {% else %}
+                    {% if list.is_active %}
+                        <input type="submit" class="btn btn-secondary" value="Add to watchlist">
+                    {% else %}
+                        <input type="submit" class="btn btn-secondary"  disabled value="Already Bidded">
+                    {% endif %}
+                {% endif %}
+            </form>
+            {% endif %}
+
+
+        {% if list.url %}
+            <div class="img-div">
+                <img  class="title-image" src="{{ list.url }}" alt="{{list.title}}">
+            </div>
+        {% endif %}
+
+
+        <div class="des-div">
+            <p>{{ list.description }}</p>
+            <p><big><b>Current Bid:</b> ${{ max }}</big></p>
+        </div>
+
+        <div class="bid">
+            <form action="{% url 'listing' list.id %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                        <label for="bid" class="form-label">Bid:</label>
+                        <input type="number" class="form-control" id="bid" placeholder="Bid" name="bid">
+                        <br>
+                        {% if user.is_authenticated %}
+                            {% if list.is_active %}
+                                <button type="submit" class="btn btn-primary">Place a Bid</button>
+                            {% else %}
+                                <button type="submit" disabled class="btn btn-primary">Can no longer Bid</button>
+                            {% endif %}
+                        {% else %}
+                            <button type="submit"  disabled class="btn btn-primary">Place a Bid(Not logged in )</button>
+                        {% endif %}
+                    {% if message %}
+                        <p>{{ message }}</p>
+                    {% endif %}
+                  </div>
+            </form>
+        </div>
+
+
+        <div>
+            <big>Details</big>
+            <ul>
+                <li>Listed by: {{ list.owner }}</li>
+                <li>Category: {{ list.category}}</li>
+            </ul>
+        </div>
+
+
+        <div class="comments-div">
+            <h4>Comments:</h4>
+            {% for comment in comments %}
+                <div class="comments">
+                    <p id="user"><b>User:</b> {{ comment.user }}</p>
+                    <p id="comment-content"> -> {{comment.comment}}</p>  
+                </div>
+                <br>  
+            {% endfor %}
+        </div>
+                
+        <div>
+            {% if user.is_authenticated %}
+                <form action="{% url 'comment' %}" method="post">
+                    {% csrf_token %}
+                        <div class="form-floating">
+                        <input type="hidden" value="{{ list.id }}" name="id">
+                        <textarea class="form-control" placeholder="Leave a comment here" name="comment"  style="height: 100px"></textarea>
+                        </div>
+                    <br>
+                    <button type="submit" class="btn btn-danger">Add a Comment</button>
+                </form>
+            {% endif %}
+        </div>
+
+        {% if is_owner %}
+            <div class="close-bid">
+                <form action="{% url 'close' list.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="max" value="{{ max }}">
+                    {% if list.is_active %}
+                        <button class="btn btn-danger" type="submit">Close Bid</button>
+                    {% else %}
+                    <button class="btn btn-danger" disabled type="submit">Close Bid</button>
+                    {% endif %}
+                </form>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}
